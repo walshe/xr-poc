@@ -25,10 +25,9 @@ const authenticateWithMagic = async (req, res, next) => {
         const didToken = authHeader.split(' ')[1];
         await magic.token.validate(didToken);
         const metadata = await magic.users.getMetadataByToken(didToken)
-        //const issuer = magic.token.getIssuer(didToken);
         console.log(`test `, JSON.stringify(metadata))
         req.magicMetadata = metadata;
-        //console.log(`User was authorized `, issuer)
+
         next();
     } catch (error) {
         res.status(401).json({ message: 'Unauthorized', error: error.message });
@@ -100,7 +99,7 @@ app.get('/api/top-nft-collections', async (req, res) => {
             console.error('Error fetching NFT data from Moralis:', error.message);
             res.status(500).json({ message: 'Failed to fetch NFT data', error: error.message });
         }
-        
+
     } catch (error) {
         console.error('Error fetching cryptocurrency data:', error);
         res.status(500).json({ message: 'Error fetching data' });
